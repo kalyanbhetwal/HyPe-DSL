@@ -1724,6 +1724,9 @@ class Computation(object):
     def adjustExecutionSchedules(self):
         return _iegenlib.Computation_adjustExecutionSchedules(self)
 
+    def resolvePhiNodes(self):
+        return _iegenlib.Computation_resolvePhiNodes(self)
+
     def deleteDeadStatements(self):
         return _iegenlib.Computation_deleteDeadStatements(self)
 

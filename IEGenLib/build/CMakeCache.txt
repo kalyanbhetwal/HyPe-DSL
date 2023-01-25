@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//No help, variable specified on the command line.
+BUILD_PYTHON:UNINITIALIZED=ON
+
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
 
@@ -213,6 +216,18 @@ IEGENLIB_BINARY_DIR:STATIC=/home/KALYANBHETWAL/HyPe-DSL/IEGenLib/build
 //Value Computed by CMake
 IEGENLIB_SOURCE_DIR:STATIC=/home/KALYANBHETWAL/HyPe-DSL/IEGenLib
 
+//Path to a file.
+SWIG_DIR:PATH=/home/KALYANBHETWAL/anaconda3/envs/iegenlib/share/swig/4.0.2
+
+//Path to a program.
+SWIG_EXECUTABLE:FILEPATH=/home/KALYANBHETWAL/anaconda3/envs/iegenlib/bin/swig
+
+//Swig version
+SWIG_VERSION:STRING=4.0.2
+
+//Dependencies for the target
+_iegenlib_LIB_DEPENDS:STATIC=general;iegenlib;general;codegen;general;isl;general;gmp;general;omega;
+
 
 ########################
 # INTERNAL cache entries
@@ -365,8 +380,23 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding Python3
+FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/home/KALYANBHETWAL/anaconda3/envs/iegenlib/bin/python3.9][cfound components:  Interpreter ][v3.9.7()]
+//Details about finding SWIG
+FIND_PACKAGE_MESSAGE_DETAILS_SWIG:INTERNAL=[/home/KALYANBHETWAL/anaconda3/envs/iegenlib/bin/swig][/home/KALYANBHETWAL/anaconda3/envs/iegenlib/share/swig/4.0.2][v4.0.2()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: GIT_EXECUTABLE
 GIT_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SWIG_DIR
+SWIG_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SWIG_EXECUTABLE
+SWIG_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: SWIG_VERSION
+SWIG_VERSION-ADVANCED:INTERNAL=1
+//Path to a program.
+_Python3_EXECUTABLE:INTERNAL=/home/KALYANBHETWAL/anaconda3/envs/iegenlib/bin/python3.9
+//Python3 Properties
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;9;7;64;;cpython-39-x86_64-linux-gnu;/home/KALYANBHETWAL/anaconda3/envs/iegenlib/lib/python3.9;/home/KALYANBHETWAL/anaconda3/envs/iegenlib/lib/python3.9;/home/KALYANBHETWAL/anaconda3/envs/iegenlib/lib/python3.9/site-packages;/home/KALYANBHETWAL/anaconda3/envs/iegenlib/lib/python3.9/site-packages
+_Python3_INTERPRETER_SIGNATURE:INTERNAL=1f1d9e1912f759dfea6309cf28c835ca
 

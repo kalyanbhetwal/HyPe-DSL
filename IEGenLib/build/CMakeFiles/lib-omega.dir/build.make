@@ -110,7 +110,7 @@ lib-omega-prefix/src/lib-omega-stamp/lib-omega-configure: lib-omega-prefix/src/l
 
 lib-omega-prefix/src/lib-omega-stamp/lib-omega-build: lib-omega-prefix/src/lib-omega-stamp/lib-omega-configure
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/KALYANBHETWAL/HyPe-DSL/IEGenLib/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Performing build step for 'lib-omega'"
-	cd /home/KALYANBHETWAL/HyPe-DSL/IEGenLib/lib/omega && $(MAKE)
+	cd /home/KALYANBHETWAL/HyPe-DSL/IEGenLib/lib/omega && make CFLAGS=-fPIC CXXFLAGS=-fPIC VERBOSE=1
 	cd /home/KALYANBHETWAL/HyPe-DSL/IEGenLib/lib/omega && /usr/local/apps/cmake/bin/cmake -E touch /home/KALYANBHETWAL/HyPe-DSL/IEGenLib/build/lib-omega-prefix/src/lib-omega-stamp/lib-omega-build
 
 lib-omega: CMakeFiles/lib-omega

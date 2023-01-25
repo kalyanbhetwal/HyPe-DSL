@@ -286,7 +286,7 @@ public:
 
     // returns the number of all terms (unique and replicates)
     // inside the conjuction.
-    int termCount();
+    //int termCount();
     
     /*!
      * Returns true if term in conjunction is bounded.
@@ -317,7 +317,7 @@ public:
     bool isUnsat(){return unsat;}
 
     //
-    SetRelationshipType setRelationship(Conjunction* rightSide);
+   //SetRelationshipType setRelationship(Conjunction* rightSide);
 
 private:
 
@@ -660,8 +660,8 @@ public:
     **
     ** \return Set will contain new constraints and will be owned by caller
     */
-    Set* addUFConstraints(std::string uf1str,
-                          std::string opstr, std::string uf2str) const;
+    //Set* addUFConstraints(std::string uf1str,
+     //                     std::string opstr, std::string uf2str) const;
 
     /*! For UFs declared as having a Monotonicity value (see
     **  MonotonicType in UninterFunc.h) constraints will be
@@ -671,7 +671,7 @@ public:
     **
     ** \return Set will contain new constraints and will be owned by caller
     */
-    Set* addConstraintsDueToMonotonicity() const;
+    //Set* addConstraintsDueToMonotonicity() const;
 
     /*! Adds constraints due to domain and range of all UFCalls in the Set.
     **  Function returns the new Set with added constraints, leaving caller
@@ -763,10 +763,10 @@ public:
     //! permutes the tuple variables into an order that is valid
     //! for codegen.
     //! \returns new Set
-    Set* permuteForCodeGen();
+    //Set* permuteForCodeGen();
 
     //
-    SetRelationshipType setRelationship(Set* rightSide);
+   // SetRelationshipType setRelationship(Set* rightSide);
 
     //
     void reOrdTV_OmegaCodeGen(std::set<int> parallelTvs);
@@ -932,8 +932,8 @@ public:
     **
     ** \return Relation will contain new constraints and is owned by caller
     */
-    Relation* addUFConstraints(std::string uf1str,
-                               std::string opstr, std::string uf2str) const;
+   //Relation* addUFConstraints(std::string uf1str,
+    //                          std::string opstr, std::string uf2str) const;
 
     /*! Adds constraints due to domain and range of all UFCalls in the
     **  Relation. Function returns the new Relation with added constraints,
@@ -949,7 +949,7 @@ public:
     **
     ** \return Relation will contain new constraints and is owned by caller
     */
-    Relation* addConstraintsDueToMonotonicity() const;
+    ///Relation* addConstraintsDueToMonotonicity() const;
 
     //! Send through ISL to achieve a canonical form.
     void normalize(bool bdr=true);
@@ -1010,7 +1010,7 @@ public:
     string getString(bool generic=false);
 
     //
-    SetRelationshipType setRelationship(Relation* rightSide);
+    //SetRelationshipType setRelationship(Relation* rightSide);
 
     //
     SetRelationshipType dataDependenceRelationship(Relation* rightSide, int parallelLoopLevel=0);
@@ -1091,7 +1091,7 @@ Relation* islRelTransitiveClosure(Relation*r,bool& isExact);
 //TODO: Make this a paart of IEGenLib and also write documentation
 Set* islSetComplement (Set* s);
 
-Relation* islRelComplement(Relation *r);
+//Relation* islRelComplement(Relation *r);
 
 }//end namespace iegenlib
 

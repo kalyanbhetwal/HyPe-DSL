@@ -40,6 +40,7 @@ ExternalProject_Add(lib-omega
     BUILD_IN_SOURCE ON
     CONFIGURE_COMMAND autoreconf -f -i
     COMMAND ./configure --prefix=${CMAKE_CURRENT_SOURCE_DIR}/lib/installed
+    BUILD_COMMAND make CFLAGS=-fPIC CXXFLAGS=-fPIC VERBOSE=1
     # BUILD_COMMAND make
     # INSTALL_COMMAND make install
 )

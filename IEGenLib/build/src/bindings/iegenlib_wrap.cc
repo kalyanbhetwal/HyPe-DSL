@@ -31014,6 +31014,35 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Computation_resolvePhiNodes(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  iegenlib::Computation *arg1 = (iegenlib::Computation *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_iegenlib__Computation, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Computation_resolvePhiNodes" "', argument " "1"" of type '" "iegenlib::Computation *""'"); 
+  }
+  arg1 = reinterpret_cast< iegenlib::Computation * >(argp1);
+  {
+    try {
+      (arg1)->resolvePhiNodes();
+    } catch (std::exception &e) {
+      std::cerr << e.what() << std::endl;
+      PyErr_SetString(PyExc_Exception, const_cast<char*>(e.what()));
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_Computation_deleteDeadStatements(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   iegenlib::Computation *arg1 = (iegenlib::Computation *) 0 ;
@@ -35347,6 +35376,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "Computation_padExecutionSchedules", _wrap_Computation_padExecutionSchedules, METH_O, NULL},
 	 { "Computation_enforceArraySSA", _wrap_Computation_enforceArraySSA, METH_O, NULL},
 	 { "Computation_adjustExecutionSchedules", _wrap_Computation_adjustExecutionSchedules, METH_O, NULL},
+	 { "Computation_resolvePhiNodes", _wrap_Computation_resolvePhiNodes, METH_O, NULL},
 	 { "Computation_deleteDeadStatements", _wrap_Computation_deleteDeadStatements, METH_O, NULL},
 	 { "Computation_toDotString", _wrap_Computation_toDotString, METH_VARARGS, NULL},
 	 { "Computation_getStmtDebugStrings", _wrap_Computation_getStmtDebugStrings, METH_O, NULL},

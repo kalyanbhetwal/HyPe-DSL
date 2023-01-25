@@ -231,6 +231,9 @@ class Computation {
     //  dynamically added statements.
     //  Ordering of inputted statements is maintained.
     void adjustExecutionSchedules();
+    
+    // Function resolves all phi nodes present in the computation
+    void resolvePhiNodes();
 
     //! Deletes statements that writes 
     //! to nodes that are never read from 
@@ -267,7 +270,7 @@ class Computation {
     std::vector<std::pair<int, Set*>> getIterSpaces();
 
     //Creates a mapping from the variables of the in tuple to those of the out tuple
-    static std::string getRelationMapping(Relation* r);
+    //static std::string getRelationMapping(Relation* r);
 
     //! Method generates c code.
     //! Known constraints are constraints that can be considered already
@@ -540,7 +543,7 @@ class Stmt {
 
 	//! EXPECT with gTest this Stmt equals the given one, component by component.
 	//! This method is for testing with gTest only.
-	void expectEqualTo(const Stmt* other) const;
+	//void expectEqualTo(const Stmt* other) const;
 
    private:
     //! Is the statement a phi node or array access

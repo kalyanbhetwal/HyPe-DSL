@@ -350,6 +350,19 @@ iegenlib_t/fast:
 .PHONY : ../bin/subSetDriver/fast
 
 #=============================================================================
+# Target rules for targets named _iegenlib
+
+# Build rule for target.
+_iegenlib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _iegenlib
+.PHONY : _iegenlib
+
+# fast build rule for target.
+_iegenlib/fast:
+	$(MAKE) -f src/bindings/CMakeFiles/_iegenlib.dir/build.make src/bindings/CMakeFiles/_iegenlib.dir/build
+.PHONY : _iegenlib/fast
+
+#=============================================================================
 # Target rules for targets named parflowio
 
 # Build rule for target.
@@ -571,6 +584,7 @@ help:
 	@echo "... ../bin/simplifyDriver"
 	@echo "... ../bin/superAffSet"
 	@echo "... ../bin/subSetDriver"
+	@echo "... _iegenlib"
 	@echo "... parflowio"
 	@echo "... geoac_codegen_driver"
 	@echo "... computation_example"

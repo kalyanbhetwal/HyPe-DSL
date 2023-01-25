@@ -51,7 +51,7 @@ void setCurrEnv();
 //! uninterpreted function declaration.
 //! Will create and add to global environment a funcName_inv if funcName 
 //! is bijective.
-void setCurrEnv(std::string funcName, Set* domain, Set* range, bool bijective);
+//void setCurrEnv(std::string funcName, Set* domain, Set* range, bool bijective);
 
 //! Append the following uninterpreted function to this environment.
 //! Will create and add to global environment a funcName_inv if funcName 

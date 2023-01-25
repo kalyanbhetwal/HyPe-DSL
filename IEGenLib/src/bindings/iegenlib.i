@@ -18,6 +18,11 @@
 %include "std_map.i"
 %include "std_set.i"
 %include "std_vector.i"
+%include "std_pair.i"
+
+%template() std::pair<string,string>;
+
+%template(PairVector)std::vector<std::pair<std::string,std::string>>;
 
 %ignore SparseConstraints::operator=;
 %ignore operator+;
@@ -40,13 +45,9 @@ object.  Solution: make all examples in python NOT use prettyPrintString(). */
 %include <../set_relation/expression.h>
 %include <../set_relation/set_relation.h>
 %include <../parser/parser.h>
-
-
-
-
-
-
-
+%include <../computation/Computation.h>
+//%include <../computation/CompGraph.h>
+//%include <../../lib/installed/include/code_gen/parser/parser.h>
 
 
 
