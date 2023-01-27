@@ -2,7 +2,7 @@ import iegenlib
 import gc  
 import inspect 
 from pprint import pprint
-gc.disable()
+#gc.disable()
 
 
 parflowio = iegenlib.Computation()
@@ -48,11 +48,16 @@ parflowio.addDataSpace("m_data", "double*")
 parflowio.addDataSpace("mean", "double*")
 parflowio.addDataSpace("sum", "double")
 
-parflowio.addDataSpace("_offsets", "long")
+parflowio.addDataSpace("_offsets", "long*")
 
-parflowio.addDataSpace("writeBuf", "double")
+parflowio.addDataSpace("writeBuf", "double*")
 parflowio.addDataSpace("read_count", "double")
 parflowio.addDataSpace("index", "long long")
+
+parflowio.addDataSpace("iz_min", "long long")
+parflowio.addDataSpace("iz_max", "long long")
+parflowio.addDataSpace("iy_min ", "long long")
+parflowio.addDataSpace("iy_max", "long long")
 
 def readFile(fileName):
     dataReads0 = iegenlib.PairVector([])
@@ -233,7 +238,7 @@ def writeFile(filename):
     dataReads1 =  iegenlib.PairVector([])
     dataWrites1 = iegenlib.PairVector([("_offsets","{[0]->[0]}")])
 
-    s1 = iegenlib.Stmt("_offsets = (long*)malloc(sizeof(long)(m_p*m_q*m_r) + 1);m_nz=1;",
+    s1 = iegenlib.Stmt("m_p=1;m_q=1;m_r=1;_offsets =(long*)malloc(sizeof(long)* ((m_p*m_q*m_r) + 1));m_nz=1;",
                         "{[0]}",
                         "{[0]->[0]}",
                         dataReads1,
@@ -279,7 +284,7 @@ def writeFile(filename):
     dataReads4 = iegenlib.PairVector([("max_x_extent","{[0]->[0]}")]) 
     dataWrites4 =  iegenlib.PairVector([("writeBuf","{[0]->[0]}")])
 
-    s4 = iegenlib.Stmt("writeBuf = (long*)malloc(sizeof(long)*max_x_extent);",
+    s4 = iegenlib.Stmt("writeBuf = (double*)malloc(sizeof(double)*max_x_extent);",
                         "{[0]}",
                         "{[0]->[3]}",
                         dataReads4,
@@ -323,6 +328,17 @@ def writeFile(filename):
                         dataWrites6)
     parflowio_write.addStmt(s6)
 
+     
+    dataReads6a = iegenlib.PairVector([("m_data","{[nsg_z, nsg_y, nsg_x, iz, iy]->[0]}")
+                                    ]) 
+    dataWrites6a =  iegenlib.PairVector([("buf","{[nsg_z, nsg_y, nsg_x, iz, iy]->[0]}")])
+
+    s6a = iegenlib.Stmt("iz_min=calcOffset(m_nz,m_r,nsg_z);iz_max=calcOffset(m_nz,m_r,nsg_z+1);iy_min=calcOffset(m_ny,m_q,nsg_y); iy_max= calcOffset(m_ny,m_q,nsg_y+1);",
+                        "{[nsg_z, nsg_y, nsg_x]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p  }",
+                        "{[nsg_z, nsg_y, nsg_x]->[5,nsg_z,0,nsg_y,0,nsg_x,1]}",
+                        dataReads6a,
+                        dataWrites6a)
+    parflowio_write.addStmt(s6a)
 
  
     dataReads7 = iegenlib.PairVector([("m_data","{[nsg_z, nsg_y, nsg_x, iz, iy]->[0]}")
@@ -330,8 +346,8 @@ def writeFile(filename):
     dataWrites7 =  iegenlib.PairVector([("buf","{[nsg_z, nsg_y, nsg_x, iz, iy]->[0]}")])
 
     s7 = iegenlib.Stmt("buf = (uint64_t*)&(m_data[iz*m_nx*m_ny+iy*m_nx+calcOffset(m_nx,m_p,nsg_x)]);",
-                        "{[nsg_z, nsg_y, nsg_x, iz, iy]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p  && calcOffset(m_nz,m_r,nsg_z)  <=iz< calcOffset(m_nz,m_r,nsg_z+1) && calcOffset(m_ny,m_q,nsg_y) <=iy< calcOffset(m_ny,m_q,nsg_y+1)}",
-                        "{[nsg_z, nsg_y, nsg_x, iz, iy]->[5,nsg_z,0,nsg_y,0,nsg_x,1,iz,0,iy,0]}",
+                        "{[nsg_z, nsg_y, nsg_x, iz, iy]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p  && iz_min  <=iz< iz_max && iy_min <=iy< iy_max}",
+                        "{[nsg_z, nsg_y, nsg_x, iz, iy]->[5,nsg_z,0,nsg_y,0,nsg_x,2,iz,0,iy,0]}",
                         dataReads7,
                         dataWrites7)
     parflowio_write.addStmt(s7)
@@ -340,27 +356,27 @@ def writeFile(filename):
                                       ("buf","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[j]}")\
                                     ]) 
     dataWrites8 =  iegenlib.PairVector([("tmp","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[0]}"),\
-                                       ("writeBuf","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[0]}")])
+                                       ("writeBuf","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[j]}")])
 
     s8 = iegenlib.Stmt("tmp = buf[j]; tmp = bswap64(tmp); writeBuf[j] = *(double*)(&tmp);",
-                        "{[nsg_z, nsg_y, nsg_x, iz, iy,j]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p  && calcOffset(m_nz,m_r,nsg_z)  <=iz< calcOffset(m_nz,m_r,nsg_z+1) && calcOffset(m_ny,m_q,nsg_y) <=iy< calcOffset(m_ny,m_q,nsg_y+1) && 0<=j<x_extent}",
-                        "{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[5,nsg_z,0,nsg_y,0,nsg_x,1,iz,0,iy,1,j,0]}",
+                        "{[nsg_z, nsg_y, nsg_x, iz, iy,j]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p  && iz_min  <=iz< iz_max && iy_min <=iy< iy_max && 0<=j<x_extent}",
+                        "{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[5,nsg_z,0,nsg_y,0,nsg_x,2,iz,0,iy,1,j,0]}",
                         dataReads8,
                         dataWrites8)
     parflowio_write.addStmt(s8)
-
-    dataReads9 = iegenlib.PairVector([("tmp","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[0]}"),\
-                                    ("buf","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[j]}")\
+    
+    dataReads9 = iegenlib.PairVector([("x_extent","{[nsg_z, nsg_y, nsg_x, iz, iy]->[0]}"),\
+                                    ("writeBuf","{[nsg_z, nsg_y, nsg_x, iz, iy]->[0]}")
                                     ]) 
-    dataWrites9 =  iegenlib.PairVector([("tmp","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[0]}"),\
-                                       ("writeBuf","{[nsg_z, nsg_y, nsg_x, iz, iy,j]->[0]}")])
+    dataWrites9 =  iegenlib.PairVector([("fp","{[nsg_z, nsg_y, nsg_x, iz, iy]->[0]}")])
 
-    s9 = iegenlib.Stmt("written = fwrite(writeBuf,sizeof(double),x_extent,fp);",
-                        "{[nsg_z, nsg_y, nsg_x, iz, iy]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p  && calcOffset(m_nz,m_r,nsg_z) <=iz< calcOffset(m_nz,m_r,nsg_z) && calcOffset(m_ny,m_q,nsg_y) <=iy< calcOffset(m_ny,m_q,nsg_y) }",
-                        "{[nsg_z, nsg_y, nsg_x, iz, iy]->[5,nsg_z,0,nsg_y,0,nsg_x,1,iz,0,iy,2]}",
+    s9 = iegenlib.Stmt("fwrite(writeBuf,sizeof(double),x_extent,fp);",
+                        "{[nsg_z, nsg_y, nsg_x, iz, iy]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p  && iz_min  <=iz< iz_max && iy_min <=iy< iy_max}",
+                        "{[nsg_z, nsg_y, nsg_x, iz, iy]->[5,nsg_z,0,nsg_y,0,nsg_x,2,iz,0,iy,2]}",
                         dataReads9,
                         dataWrites9)
     parflowio_write.addStmt(s9)
+
 
     dataReads10 = iegenlib.PairVector([("tmp","{[nsg_z, nsg_y, nsg_x]->[0]}"),\
                                     ("buf","{[nsg_z, nsg_y, nsg_x]->[j]}")\
@@ -370,7 +386,7 @@ def writeFile(filename):
 
     s10 = iegenlib.Stmt("byte_offsets[sg_count] = ftell(fp); sg_count++;",
                         "{[nsg_z, nsg_y, nsg_x]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p }",
-                        "{[nsg_z, nsg_y, nsg_x]->[5,nsg_z,0,nsg_y,0,nsg_x,2]}",
+                        "{[nsg_z, nsg_y, nsg_x]->[5,nsg_z,0,nsg_y,0,nsg_x,3]}",
                         dataReads10,
                         dataWrites10)
     parflowio_write.addStmt(s10)
@@ -413,12 +429,13 @@ parflowiox_mean = compute_mean()
 result = parflowiox_readFile.appendComputation(parflowiox_mean, "{[0]}","{[0]->[4]}")
 #print(result.tuplePosition,  result.returnValues)
 
-
-
 parflowiox_writeFile = iegenlib.Computation()
 parflowiox_writeFile = writeFile("hello.pfb")
 
 update_ES = "{[0]->[" +str((result.tuplePosition+1))+"]}"
 result2 = parflowiox_readFile.appendComputation(parflowiox_writeFile, "{[0]}",update_ES)
+# parflowiox_readFile.finalize()
+knownConstraints = iegenlib.Set("{[nsg_z, nsg_y, nsg_x, iz, iy]:calcOffset(m_nz,m_r,nsg_z)  <= calcOffset(m_nz,m_r,nsg_z+1) && calcOffset(m_ny,m_q,nsg_y) <= calcOffset(m_ny,m_q,nsg_y+1)}")
+print(parflowiox_readFile.codeGen(knownConstraints=knownConstraints))
 
-print(parflowiox_readFile.codeGen())
+parflowiox_readFile.clear()
