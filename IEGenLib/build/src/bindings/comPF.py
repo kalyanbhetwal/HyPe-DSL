@@ -284,7 +284,7 @@ def writeFile(filename):
     dataReads4 = iegenlib.PairVector([("max_x_extent","{[0]->[0]}")]) 
     dataWrites4 =  iegenlib.PairVector([("writeBuf","{[0]->[0]}")])
 
-    s4 = iegenlib.Stmt("writeBuf = (double*)malloc(sizeof(double)*max_x_extent);",
+    s4 = iegenlib.Stmt(" std::vector<double> writeBuf(max_x_extent);",
                         "{[0]}",
                         "{[0]->[3]}",
                         dataReads4,
@@ -378,11 +378,11 @@ def writeFile(filename):
     parflowio_write.addStmt(s9)
 
 
-    dataReads10 = iegenlib.PairVector([("tmp","{[nsg_z, nsg_y, nsg_x]->[0]}"),\
-                                    ("buf","{[nsg_z, nsg_y, nsg_x]->[j]}")\
+    dataReads10 = iegenlib.PairVector([("fp","{[nsg_z, nsg_y, nsg_x]->[0]}"),\
+                                    ("sg_count","{[nsg_z, nsg_y, nsg_x]->[0]}")
                                     ]) 
-    dataWrites10 =  iegenlib.PairVector([("tmp","{[nsg_z, nsg_y, nsg_x]->[0]}"),\
-                                       ("writeBuf","{[nsg_z, nsg_y, nsg_x]->[0]}")])
+    dataWrites10 =  iegenlib.PairVector([("byte_offsets","{[nsg_z, nsg_y, nsg_x]->[sg_count]}"),\
+                                       ("sg_count","{[nsg_z, nsg_y, nsg_x]->[0]}")])
 
     s10 = iegenlib.Stmt("byte_offsets[sg_count] = ftell(fp); sg_count++;",
                         "{[nsg_z, nsg_y, nsg_x]: 0<= nsg_z< m_r &&  0<= nsg_y< m_q &&  0<= nsg_x< m_p }",
