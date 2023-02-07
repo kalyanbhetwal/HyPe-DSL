@@ -1930,7 +1930,8 @@ std::vector<std::pair<int, std::string>> Computation::getStmtDebugStrings() {
 
 
 void Computation::addTransformation(unsigned int stmtIndex, Relation* rel) {
-    transformationLists.at(stmtIndex).emplace_back(rel);
+    Relation * rel1 = new Relation(*rel);
+    transformationLists.at(stmtIndex).emplace_back(rel1);
 }
 
 std::vector<Set*> Computation::applyTransformations() {
@@ -2103,7 +2104,7 @@ std::string Computation::codeGen(Set* knownConstraints) {
     // initialize tuple variables
     std::ostringstream TupleAssignments;
     for(const auto& tupleA: vOmegaReplacer->getTupleAssignments()) {
-        TupleAssignments << "t" << (tupleA.first + 1) << " = "
+        TupleAssignments<< "int "<<  "t" << (tupleA.first + 1) << " = "
                          << tupleA.second << "; \n";
     }
     generatedCode << TupleAssignments.str() << "\n";
