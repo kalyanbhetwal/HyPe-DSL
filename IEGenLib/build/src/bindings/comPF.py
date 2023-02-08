@@ -50,7 +50,7 @@ parflowio.addDataSpace("sum", "double")
 
 parflowio.addDataSpace("_offsets", "long*")
 
-parflowio.addDataSpace("writeBuf", "double*")
+#parflowio.addDataSpace("writeBuf", "double*")
 parflowio.addDataSpace("read_count", "double")
 parflowio.addDataSpace("index", "long long")
 
@@ -208,18 +208,18 @@ def compute_mean():
     #                     dataWrites3)
     # parflowio_mean.addStmt(s3)
 
-    s3 = iegenlib.Stmt("mean[x+y*m_nx] = 0;",
+    s3 = iegenlib.Stmt("mean[x+m_nx*y] = 0;",
                         "{[x,y]:0<=y<m_ny && 0<=x<m_nx}",
                         "{[x,y]->[0,x,0,y,1]}",
                         dataReads3,
                         dataWrites3)
-    #parflowio_mean.addStmt(s3)
+    parflowio_mean.addStmt(s3)
 
 
     dataReads4 =  iegenlib.PairVector([("m_data","{[x,y,z]->[z,y,x]}")])
     dataWrites4 = iegenlib.PairVector([("mean","{[x,y,z]->[x,y]}")])
 
-    s4 = iegenlib.Stmt("mean[x+y*m_nx]+=m_data[(long long)(z)*m_ny*m_nx+y*m_nx+x];",
+    s4 = iegenlib.Stmt("mean[x+m_nx*y]+=m_data[(long long)(z)*m_ny*m_nx+y*m_nx+x];",
                         "{[x,y,z]:0<=y<m_ny && 0<=x<m_nx && 0<=z<m_nz}",
                         "{[x,y,z]->[0,x,0,y,1,z,0]}",
                         dataReads4,
@@ -229,7 +229,7 @@ def compute_mean():
     dataReads5 =  iegenlib.PairVector([("mean","{[y,x]->[y,x]}")])
     dataWrites5 = iegenlib.PairVector([("mean","{[y,x]->[y,x]}")])
 
-    s5 = iegenlib.Stmt("mean[x+y*m_nx] = mean[x+y*m_nx]/m_nz;",
+    s5 = iegenlib.Stmt("mean[x+m_nx*y] = mean[x+m_nx*y]/m_nz;",
                         "{[x,y]:0<=y<m_ny && 0<=x<m_nx}",
                         "{[x,y]->[0,x,0,y,2]}",
                         dataReads5,
@@ -445,15 +445,24 @@ result2 = parflowiox_readFile.appendComputation(parflowiox_writeFile, "{[0]}",up
 # parflowiox_readFile.finalize()
 knownConstraints = iegenlib.Set("{[nsg_z, nsg_y, nsg_x, iz, iy]:calcOffset(m_nz,m_r,nsg_z)  <= calcOffset(m_nz,m_r,nsg_z+1) && calcOffset(m_ny,m_q,nsg_y) <= calcOffset(m_ny,m_q,nsg_y+1)}")
 
-rel = iegenlib.Relation("{[4, x, 0, y, 1, z, 0]-> [4, z, 0, y, 1, x, 0]}")
+## shift statement to the top
+rel7 = iegenlib.Relation("{[4]->[2]}")
+parflowiox_readFile.addTransformation(7, rel7)
 
-parflowiox_readFile.addTransformation(8, rel)
+# shift statement to the second from the top
+rel8 = iegenlib.Relation("{[4, x, 0, y, 1]-> [2, x, 0, y, 1]}")
+parflowiox_readFile.addTransformation(8, rel8)
 
-rel = iegenlib.Relation("{[4, x, 0, y, 2]-> [4, y, 0, x, 2]}")
 
-parflowiox_readFile.addTransformation(9, rel)
-print(parflowiox_readFile.getStmt(6))
+# transform x, y, z -> z, y, x
+rel9 = iegenlib.Relation("{[4, x, 0, y, 1, z, 0]-> [4, z, 0, y, 0, x, 0]}")
+parflowiox_readFile.addTransformation(9, rel9)
+
+rel10 = iegenlib.Relation("{[4, x, 0, y, 2]-> [5, y, 0, x, 0]}")
+parflowiox_readFile.addTransformation(10, rel10)
+
+
 # parflowiox_mean.fuse(6,8,3)
 print(parflowiox_readFile.codeGen(knownConstraints=knownConstraints))
-print(parflowiox_readFile.getStmt(9))
+
 parflowiox_readFile.clear()
