@@ -455,10 +455,10 @@ parflowiox_readFile.addTransformation(8, rel8)
 
 
 # transform x, y, z -> z, y, x
-rel9 = iegenlib.Relation("{[4, x, 0, y, 1, z, 0]-> [4, z, 0, y, 0, x, 0]}")
+rel9 = iegenlib.Relation("{[4, x, 0, y, 1, z, 0]-> [3, z, 2, y, 1, x, 1]}")
 parflowiox_readFile.addTransformation(9, rel9)
 
-rel10 = iegenlib.Relation("{[4, x, 0, y, 2]-> [5, y, 0, x, 0]}")
+rel10 = iegenlib.Relation("{[4, x, 0, y, 2]-> [4, y, 0, x, 0]}")
 parflowiox_readFile.addTransformation(10, rel10)
 
 
