@@ -463,7 +463,7 @@ rel2 = iegenlib.Relation("{[3, z, 0, y, 1, x, 1]-> [3,nsg,2, z, 0, y, 1, x, 1]:n
 parflowio.addTransformation(9,rel2)
 
 #tile the loop
-rel = iegenlib.Relation("{[3,0,2, z, 0, y, 1, x, 1]->[3,0,2,ik,ir,z,0, jk,jr,y, kk,kr,1,x,2]: 0<=ir<888888 and z=888888 ik+ir and 0<=jr<777777 and y=777777 jk+jr  and   0<=kr<999999 and x=999999 kk+kr}")
+rel = iegenlib.Relation("{[3,0,2, z, 0, y, 1, x, 1]->[3,0,2,ik,ir,z,0, jk,jr,y,1,kk,x,2]: 0<=ir<888888 and z=888888 ik+ir and 0<=jr<777777 and y=777777 jk+jr  and   0<=kr<999999 and x=999999 kk+kr}")
 parflowio.addTransformation(stmtIndex=9,rel=rel)
 
 rel10 = iegenlib.Relation("{[4, x, 0, y, 2]-> [4, y, 0, x, 0]}")
