@@ -25,7 +25,7 @@ parflowio.addStmt(s4)
 rel2 = iegenlib.Relation("{[1, x, 0, y, 0, z, 0]-> [0, x, 0, y, 0, z, 1]}")
 parflowio.addTransformation(1,rel2)
 
-rel = iegenlib.Relation("{[0, x, 0, y, 0, z, 1]->[ik,ir,x, jk,jr,y, kk,kr,z]: 0<=ir<888888 and x=888888 ik+ir and 0<=jr<777777 and y=777777 jk+jr  and   0<=kr<999999 and z=777777 kk+kr}")
+rel = iegenlib.Relation("{[0, x, 0, y, 0, z, 1]->[ik,ir,x, jk,jr,y, kk,kr,z]: 0<=ir<888888 and x=888888 ik+ir and 0<=jr<777777 and y=777777 jk+jr  and   0<=kr<999999 and z=999999 kk+kr}")
 parflowio.addTransformation(stmtIndex=1,rel=rel)
 
 #parflowio.fuse(0,1,8)
