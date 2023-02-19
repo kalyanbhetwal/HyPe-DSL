@@ -1093,6 +1093,9 @@ Set* islSetComplement (Set* s);
 
 //Relation* islRelComplement(Relation *r);
 
+Set* islSetAffineApply(Relation* r, Set* s);
+
+
 }//end namespace iegenlib
 
 #endif /* SET_RELATION_H_ */

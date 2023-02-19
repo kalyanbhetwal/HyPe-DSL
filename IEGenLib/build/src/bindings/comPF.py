@@ -219,9 +219,9 @@ def compute_mean():
     dataReads4 =  iegenlib.PairVector([("m_data","{[x,y,z]->[z,y,x]}")])
     dataWrites4 = iegenlib.PairVector([("mean","{[x,y,z]->[x,y]}")])
 
-    s4 = iegenlib.Stmt("mean[x+m_nx*(y)]+=m_data[(long long)(z)*m_ny*m_nx+(y)*m_nx+x];",
-                        "{[x,y,z]:0<=y<m_ny && 0<=x<m_nx && 0<=z<m_nz}",
-                        "{[x,y,z]->[0,x,0,y,1,z,0]}",
+    s4 = iegenlib.Stmt("mean[(x+j)+m_nx*((y)+k)]+=m_data[(long long)(z)*m_ny*m_nx+((y)+k)*m_nx+(x)+j];",
+                        "{[nsg, j,i,k]:0<=nsg<m_numSubgrids && 0<=i<ny && 0<=j<nx && 0<=k<nz}",
+                        "{[nsg,j,i,k]->[0,nsg,0,j,0,i,1,k,0]}",
                         dataReads4,
                         dataWrites4)
     parflowio_mean.addStmt(s4)
@@ -455,16 +455,16 @@ parflowiox_readFile.addTransformation(8, rel8)
 
 
 # transform x, y, z -> z, y, x
-rel9 = iegenlib.Relation("{[4, x, 0, y, 1, z, 0]-> [3, z, 0, y, 1, x, 1]}")
+rel9 = iegenlib.Relation("{[4,nsg,0, j, 0, i, 1, k, 0]-> [3, nsg, 2, k, 0, i, 1, j, 1]}")
 parflowiox_readFile.addTransformation(9, rel9)
 
 # add nsg loop to prepare for tiling
 rel2 = iegenlib.Relation("{[3, z, 0, y, 1, x, 1]-> [3,nsg,2, z, 0, y, 1, x, 1]:nsg=0}")
-parflowio.addTransformation(9,rel2)
+#parflowio.addTransformation(9,rel2)
 
 #tile the loop
 rel = iegenlib.Relation("{[3,0,2, z, 0, y, 1, x, 1]->[3,0,2,ik,ir,z,0, jk,jr,y,1,kk,x,2]: 0<=ir<888888 and z=888888 ik+ir and 0<=jr<777777 and y=777777 jk+jr  and   0<=kr<999999 and x=999999 kk+kr}")
-parflowio.addTransformation(stmtIndex=9,rel=rel)
+#parflowio.addTransformation(stmtIndex=9,rel=rel)
 
 rel10 = iegenlib.Relation("{[4, x, 0, y, 2]-> [4, y, 0, x, 0]}")
 parflowiox_readFile.addTransformation(10, rel10)

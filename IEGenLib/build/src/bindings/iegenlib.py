@@ -1534,6 +1534,9 @@ def islRelTransitiveClosure(r, isExact):
 def islSetComplement(s):
     return _iegenlib.islSetComplement(s)
 
+def islSetAffineApply(r, s):
+    return _iegenlib.islSetAffineApply(r, s)
+
 def string_get_next_char():
     return _iegenlib.string_get_next_char()
 

@@ -219,7 +219,7 @@ def compute_mean():
     dataReads4 =  iegenlib.PairVector([("m_data","{[x,y,z]->[z,y,x]}")])
     dataWrites4 = iegenlib.PairVector([("mean","{[x,y,z]->[x,y]}")])
 
-    s4 = iegenlib.Stmt("mean[x+m_nx*y]+=m_data[(long long)(z)*m_ny*m_nx+y*m_nx+x];",
+    s4 = iegenlib.Stmt("mean[x+m_nx*(y)]+=m_data[(long long)(z)*m_ny*m_nx+(y)*m_nx+x];",
                         "{[x,y,z]:0<=y<m_ny && 0<=x<m_nx && 0<=z<m_nz}",
                         "{[x,y,z]->[0,x,0,y,1,z,0]}",
                         dataReads4,

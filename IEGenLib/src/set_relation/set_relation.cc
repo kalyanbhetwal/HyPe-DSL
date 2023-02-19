@@ -45,6 +45,20 @@ string passSetStrThruISL(string sstr){
   return islStr;
 }
 
+Set* islSetAffineApply(Relation* r, Set* s){
+  isl_ctx *ctx  = isl_ctx_alloc();
+  string sstr = s->toISLString();
+  string rstr = r->toISLString();
+  isl_set* isl_s = islStringToSet(sstr,ctx);
+  isl_map* isl_m = islStringToMap(rstr,ctx);
+  isl_set* isl_res = isl_set_apply(isl_s,isl_m); 
+  
+  string isl_res_str = islSetToString(isl_res,ctx);
+  Set * res =  new Set(isl_res_str);
+  isl_ctx_free(ctx);
+  return res;
+}
+
 //! Runs an Affine Union Set* (string) through ISL
 //  and returns the resulting set as a string
 //  * Union Set is a set of polyhedrals that may live in different space

@@ -28382,6 +28382,43 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_islSetAffineApply(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  iegenlib::Relation *arg1 = (iegenlib::Relation *) 0 ;
+  iegenlib::Set *arg2 = (iegenlib::Set *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  iegenlib::Set *result = 0 ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "islSetAffineApply", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_iegenlib__Relation, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "islSetAffineApply" "', argument " "1"" of type '" "iegenlib::Relation *""'"); 
+  }
+  arg1 = reinterpret_cast< iegenlib::Relation * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_iegenlib__Set, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "islSetAffineApply" "', argument " "2"" of type '" "iegenlib::Set *""'"); 
+  }
+  arg2 = reinterpret_cast< iegenlib::Set * >(argp2);
+  {
+    try {
+      result = (iegenlib::Set *)iegenlib::islSetAffineApply(arg1,arg2);
+    } catch (std::exception &e) {
+      std::cerr << e.what() << std::endl;
+      PyErr_SetString(PyExc_Exception, const_cast<char*>(e.what()));
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_iegenlib__Set, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_string_get_next_char(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   int result;
@@ -35316,6 +35353,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "islSetProjectOut", _wrap_islSetProjectOut, METH_VARARGS, NULL},
 	 { "islRelTransitiveClosure", _wrap_islRelTransitiveClosure, METH_VARARGS, NULL},
 	 { "islSetComplement", _wrap_islSetComplement, METH_O, NULL},
+	 { "islSetAffineApply", _wrap_islSetAffineApply, METH_VARARGS, NULL},
 	 { "string_get_next_char", _wrap_string_get_next_char, METH_NOARGS, NULL},
 	 { "parse_env", _wrap_parse_env, METH_O, NULL},
 	 { "set_parse_env_result", _wrap_set_parse_env_result, METH_O, NULL},
